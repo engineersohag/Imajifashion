@@ -1,1 +1,0 @@
-<h2 class="bg-primary">Hello Bangladesh</h2>
