@@ -51,9 +51,16 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $count = 1;
+                            @endphp
                             @foreach ($brands as $brand)
                             <tr>
-                                <td>{{$brand->id}}</td>
+                                <td>
+                                    @php
+                                        echo $count++;
+                                    @endphp
+                                </td>
                                 <td class="pname">
                                     <div class="image">
                                         <img src="{{asset('uploads/brands')}}/{{$brand->image}}" alt="{{$brand->name}}" class="image">
@@ -74,7 +81,7 @@
                                         <form action="{{route('admin.brand.delete', ['id'=>$brand->id])}}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <div class="item text-danger delete" id="delete">
+                                            <div class="item text-danger delete-btn">
                                                 <i class="icon-trash-2"></i>
                                             </div>
                                         </form>
@@ -98,7 +105,7 @@
 @push('scripts')
     <script>
         $(function(){
-            $('#delete').on('click', function(e){
+            $('.delete-btn').on('click', function(e){
                 e.preventDefault();
                 var form = $(this).closest('form');
                 swal({
