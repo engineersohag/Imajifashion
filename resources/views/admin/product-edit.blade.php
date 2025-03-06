@@ -28,8 +28,10 @@
             </ul>
         </div>
         <!-- form-add-product -->
-        <form class="tf-section-2 form-add-product" method="POST" enctype="multipart/form-data" action="#">
+        <form class="tf-section-2 form-add-product" method="POST" enctype="multipart/form-data" action="{{route('admin.product.update')}}">
             @csrf
+            @method('PUT')
+            <input type="hidden" name="id" value="{{$product->id}}">
             <div class="wg-box">
                 <fieldset class="name">
                     <div class="body-title mb-10">Product name <span class="tf-color-1">*</span> </div>
@@ -102,16 +104,18 @@
                 <fieldset>
                     <div class="body-title">Upload images <span class="tf-color-1">*</span></div>
                     <div class="upload-image flex-grow">
-                        <div class="item" id="imgpreview" style="display:none">
-                            <img src="../../../localhost_8000/images/upload/upload-1.png"  class="effect8" alt="">
-                        </div>
+                        @if ($product->image)
+                        <div class="item" id="imgpreview">
+                            <img src="{{asset('uploads/products')}}/{{$product->image}}"  class="effect8" alt="{{$product->name}}">
+                        </div> 
+                        @endif
                         <div id="upload-file" class="item up-load">
                             <label class="uploadfile" for="myFile">
                                 <span class="icon">
                                     <i class="icon-upload-cloud"></i>
                                 </span>
                                 <span class="body-text">Drop your images here or select <span class="tf-color">click to browse</span></span>
-                                <input type="file" id="myFile" name="image" accept="image/*">
+                                <input type="file" id="myFile" name="image" value="{{$product->image}}" accept="image/*">
                             </label>
                         </div>
                     </div>
@@ -123,9 +127,13 @@
                 <fieldset>
                     <div class="body-title mb-10">Upload Gallery Images</div>
                     <div class="upload-image mb-16">
-                        <!-- <div class="item">
-                                <img src="images/upload/upload-1.png" alt="">
-                            </div>    -->
+                        @if ($product->images)
+                            @foreach (explode(',',$product->images) as $img)
+                            <div class="item gitems">
+                                <img src="{{asset('uploads/products')}}/{{trim($img)}}" alt="{{$product->name}}">
+                            </div>
+                            @endforeach
+                        @endif
                         <div id="galUpload" class="item up-load">
                             <label class="uploadfile" for="gFile">
                                 <span class="icon">
@@ -133,7 +141,7 @@
                                 </span>
                                 <span class="text-tiny">Drop your images here or select <span
                                         class="tf-color">click to browse</span></span>
-                                <input type="file" id="gFile" name="images[]" accept="image/*" multiple="">
+                                <input type="file" id="gFile" name="images[]" value="{{$product->images}}" accept="image/*" multiple="">
                             </label>
                         </div>
                     </div>
