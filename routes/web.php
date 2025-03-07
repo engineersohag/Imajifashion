@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthAdmin;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+
+//route for shop
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 
 // for user page  
 Route::middleware(['auth'])->group(function(){
@@ -39,4 +43,5 @@ Route::middleware(['auth', AuthAdmin::class])->group(function(){
     Route::post('/admin/product/store', [AdminController::class, 'product_store'])->name('admin.product.store');
     Route::get('/admin/product/{id}/edit', [AdminController::class, 'product_edit'])->name('admin.product.edit');
     Route::put('/admin/product/update', [AdminController::class, 'product_update'])->name('admin.product.update');
+    Route::delete('/admin/product/{id}/delete', [AdminController::class, 'product_delete'])->name('admin.product.delete');
 });
