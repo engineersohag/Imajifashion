@@ -23,7 +23,7 @@
                     <i class="icon-chevron-right"></i>
                 </li>
                 <li>
-                    <div class="text-tiny">Edit product</div>
+                    <div class="text-tiny">Edit Product</div>
                 </li>
             </ul>
         </div>
@@ -115,7 +115,7 @@
                                     <i class="icon-upload-cloud"></i>
                                 </span>
                                 <span class="body-text">Drop your images here or select <span class="tf-color">click to browse</span></span>
-                                <input type="file" id="myFile" name="image" value="{{$product->image}}" accept="image/*">
+                                <input type="file" id="myFile" name="image" accept="image/*">
                             </label>
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                         @if ($product->images)
                             @foreach (explode(',',$product->images) as $img)
                             <div class="item gitems">
-                                <img src="{{asset('uploads/products')}}/{{trim($img)}}" alt="{{$product->name}}">
+                                <img src="{{asset('uploads/products')}}/{{trim($img)}}" alt="">
                             </div>
                             @endforeach
                         @endif
@@ -141,7 +141,7 @@
                                 </span>
                                 <span class="text-tiny">Drop your images here or select <span
                                         class="tf-color">click to browse</span></span>
-                                <input type="file" id="gFile" name="images[]" value="{{$product->images}}" accept="image/*" multiple="">
+                                <input type="file" id="gFile" name="images[]" accept="image/*" multiple="">
                             </label>
                         </div>
                     </div>

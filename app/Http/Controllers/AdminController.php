@@ -286,7 +286,7 @@ class AdminController extends Controller
             'stock_status' => 'required',
             'featured' => 'required',
             'quantity' => 'required',
-            'image' => 'required|mimes:png,jpg,jpeg|max:2048',
+            'image' => 'nullable|mimes:png,jpg,jpeg|max:2048',
             'category_id' => 'required',
             'brand_id' => 'required'
         ]);
