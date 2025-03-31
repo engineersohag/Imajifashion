@@ -27,6 +27,7 @@ Route::delete('/cart/clear', [CartController::class, 'empty_cart'])->name('cart.
 
 // for wishlist 
 Route::post('/wishlist/add', [WishlistController::class, 'add_to_wishlist'])->name('wishlist.add');
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 
 // for user page  
 Route::middleware(['auth'])->group(function(){
