@@ -127,6 +127,7 @@
                   <tr>
                     <th>VAT</th>
                     <td>${{Cart::instance('cart')->tax()}}</td>
+                    {{-- <td>Free</td> --}}
                   </tr>
                   <tr>
                     <th>Total</th>

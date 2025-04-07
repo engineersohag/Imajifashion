@@ -9,8 +9,10 @@ use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
+use Surfsidemedia\Shoppingcart\Facades\Cart;
 
 class AdminController extends Controller
 {
@@ -405,5 +407,75 @@ class AdminController extends Controller
         $coupon->expiry_date = $request->expiry_date;
         $coupon->save();
         return redirect()->route('admin.coupons')->with('status', 'Coupon has been added successfully!');
+    }
+
+    public function coupon_edit($id){
+        $coupon = Coupon::find($id);
+        return view('admin.coupon-edit', compact('coupon'));
+    }
+
+    public function coupon_update(Request $request){
+        $request->validate([
+            'code' => 'required',
+            'type' => 'required',
+            'value' => 'required|numeric',
+            'cart_value' => 'required|numeric',
+            'expiry_date' => 'required|date'
+        ]);
+
+        $coupon = Coupon::find($request->id);
+        $coupon->code = $request->code;
+        $coupon->type = $request->type;
+        $coupon->value = $request->value;
+        $coupon->cart_value = $request->cart_value;
+        $coupon->expiry_date = $request->expiry_date;
+        $coupon->save();
+        return redirect()->route('admin.coupons')->with('status', 'Coupon has been updated successfully!');
+    }
+
+    public function coupon_delete($id){
+        $coupon = Coupon::find($id);
+        $coupon->delete();
+        return redirect()->route('admin.coupons')->with('status', 'Coupon has been deleted successfully!');
+    }
+
+    public function apply_coupon_code(Request $request){
+        $coupon_code = $request->coupon_code;
+        if(isset($coupon_code)){
+            $coupon = Coupon::where('code', $coupon_code)->where('expiry_date', '>=', Carbon::today())->where('cart_value', '<=', Cart::instance('cart')->subtotal())->first();
+            if(!$coupon){
+                return redirect()->back()->with('error', 'Invalid Coupon Code!🤬');
+            }else{
+                Session::put('coupon', [
+                    'code' => $coupon->code,
+                    'type' => $coupon->type,
+                    'value' => $coupon->value,
+                    'cart_value' => $coupon->cart_value
+                ]);
+            }
+        }else{
+            return redirect()->back()->with('error', 'Invalid Coupon Code!🤬');
+        }
+    }
+
+    public function calculateDiscount(){
+        $discount = 0;
+        if(Session::has('coupon')){
+            if(Session::get('coupon')['type']=='fixed'){
+                $discount = Session::get('coupon')['value'];
+            }else{
+                $discount = (Cart::instance('cart')->subtotal() * Session::get('coupon')['value'])/100;
+            }
+
+            $subtotalAfterDiscount = Cart::instance('cart')->subtotal() - $discount;
+            $taxAfterDiscout = ($subtotalAfterDiscount * (config('cart.tax')/100 - config('cart.tax'))/100);
+            $totalAfterDiscount = $taxAfterDiscout + $subtotalAfterDiscount;
+
+            Session::put('discounts', [
+                'discout' => number_format(floatval($discount),2,'.',''),
+                'subtotal' => number_format(floatval($subtotalAfterDiscount),2,'.',''),
+                'total' => number_format(floatval($totalAfterDiscount),2,'.','')
+            ]);
+        }
     }
 }
