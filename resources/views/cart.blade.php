@@ -157,10 +157,6 @@
                     <th>Shipping</th>
                     <td>Free</td>
                   </tr>
-                  {{-- <tr>
-                    <th>VAT</th>
-                    <td>${{Session::get('discounts')['tax']}}</td>
-                  </tr> --}}
                   <tr>
                     <th>Total</th>
                     <td>${{Session::get('discounts')['total']}}</td>
@@ -178,10 +174,6 @@
                     <th>Shipping</th>
                     <td>Free</td>
                   </tr>
-                  {{-- <tr>
-                    <th>VAT</th>
-                    <td>${{Cart::instance('cart')->tax()}}</td>
-                  </tr> --}}
                   <tr>
                     <th>Total</th>
                     <td>${{Cart::instance('cart')->total()}}</td>
@@ -192,7 +184,7 @@
             </div>
             <div class="mobile_fixed-btn_wrapper">
               <div class="button-wrapper container">
-                <a href="checkout.html" class="btn btn-primary btn-checkout">PROCEED TO CHECKOUT</a>
+                <a href="{{route('cart.checkout')}}" class="btn btn-primary btn-checkout">PROCEED TO CHECKOUT</a>
               </div>
             </div>
           </div>
