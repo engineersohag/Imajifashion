@@ -65,7 +65,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## 📞 Contact
 
-**Phone:** +8801750-965595
+**Phone:** +8801750-965595  </br>
 **Email:** connectwithsohag@gmail.com  
 **Website:** [imajifashion.com](https://imajifashion.com)
 
